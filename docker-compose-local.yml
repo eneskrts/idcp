@@ -1,0 +1,80 @@
+version: '2'
+services:
+ 
+  idcp_redis:
+    image: redis
+    container_name: idcp_redis
+    restart: always
+    user: root
+    command: redis-server --appendonly yes
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/usr/share/redis/data
+  idcp_postgresql:
+    image: postgres
+    container_name: idcp_postgresql
+    environment:
+      - POSTGRES_DB=$POSTGRES_DB
+      - POSTGRES_USER=$POSTGRES_USER
+      - POSTGRES_PASSWORD=$POSTGRES_PASSWORD
+      - POSTGRES_NAME=$POSTGRES_NAME
+      - POSTGRES_ENCODING=UTF-8
+    restart: always
+
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/usr/share/postgres/data
+
+  idcp_django:
+    build: .
+    container_name: idcp_django
+    entrypoint:  entrypoints/django.sh
+
+    restart: always
+    environment:
+      DJANGO_SETTINGS_MODULE: "$DJANGO_SETTINGS_MODULE"
+
+    ports:
+        - "8000:8000"
+    volumes: 
+      - ./idcp_project:/idcp_project
+      - ./static:/static
+      - ./media:/media
+    depends_on: 
+      - idcp_redis
+      - idcp_postgresql
+  celery:
+    build: .
+    command: bash -c "celery -A idcp_project worker -l INFO"
+    volumes:
+      - ./idcp_project:/idcp_project
+      - ./static:/static
+      - ./media:/media
+    restart: always
+    environment:
+      DJANGO_SETTINGS_MODULE: "$DJANGO_SETTINGS_MODULE"
+    depends_on:
+      - idcp_django
+
+  nginx:
+    build: ./nginx
+    ports:
+      - "80:80"
+    depends_on:
+      - idcp_django
+    restart: on-failure
+    volumes:
+      - ./static:/static
+      - ./media:/media
+
+volumes:
+   redis_data:
+   postgres_data:
+   static:
+   media:
+   idcp_project:
+   pgadmin_data:
+
+

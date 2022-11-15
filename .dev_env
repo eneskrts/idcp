@@ -1,0 +1,9 @@
+DJANGO_SETTINGS_MODULE=idcp_project.settings.production
+DJANGO_SECRET_KEY=django-insecure-25g_@%uz=vj^+&-c8xt6lwis8sp*reg70(2md@jl-urmmmd58@
+PGADMIN_DEFAULT_EMAIL=admin@idcp.com
+PGADMIN_DEFAULT_PASSWORD=idcp12345@!
+POSTGRES_DB=postgres
+POSTGRES_USER=postgres
+POSTGRES_PASSWORD=postgres
+POSTGRES_NAME=postgres
+POSTGRES_CONTAINER_NAME=idcp_postgres
