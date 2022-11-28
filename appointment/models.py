@@ -1,8 +1,8 @@
 from django.db import models
 from django.contrib.postgres.fields import ArrayField,DateTimeRangeField
-from .enums import SessionTimeSlots
 import datetime
 from psycopg2.extras import DateTimeTZRange
+from .enums import MeetingStatusOption, DoctorsRequest
 # Create your models here.
 
 
@@ -12,10 +12,36 @@ class BaseModel(models.Model):
     
     class Meta:
         abstract = True
+        
 class Availability(BaseModel):
     
-    available_time=DateTimeRangeField()
-    available_user=models.ForeignKey(to='auth.User', on_delete=models.DO_NOTHING, related_name='available_user',null=False)
+    available_time = DateTimeRangeField()
+    reserved = models.BooleanField(default=0)
+    available_user = models.ForeignKey(to='auth.User', on_delete=models.DO_NOTHING, related_name='available_user',null=False)
 
     
+class MeetingRoom(BaseModel):
+    meeting_host = models.ForeignKey(to="auth.User",on_delete=models.DO_NOTHING, related_name="meeting_host")
+    meeting_name = models.CharField(max_length=200,null=False)
+    meeting_description = models.CharField(max_length=1000)
+    
+    attendees = models.ManyToManyField(to="auth.User", related_name="attendees", through="MeetingRequest")
+    
+    meeting_url = models.CharField(max_length=1000)
+    meeting_start_time = models.DateTimeField(null=False)
+    
+    meeting_status = models.CharField(choices=MeetingStatusOption.choices, default=MeetingStatusOption.ACTIVE, null=False, max_length=20)
+    
+    def __str__(self):
+        return self.meeting_name
+    
+    
+class AppointmentRequest(BaseModel):
+    meeting = models.ForeignKey(to="randevu.MeetingRoom",on_delete=models.CASCADE)
+    doctor =models.ForeignKey(to="auth.User",on_delete=models.CASCADE, related_name="doctor")
+    
+    doctor_request = models.CharField(choices=DoctorsRequest.choices, default=DoctorsRequest.WAITING, null=False, max_length=20)
+    
+    def __str__(self):
+        return self.doctor.username
     
