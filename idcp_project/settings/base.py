@@ -36,6 +36,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     # 3rd party
     'rest_framework',
+    'django_filters',
     # our apps
     'authentication',
     'appointment',
@@ -102,3 +103,4 @@ USE_TZ = True
 STATIC_URL = '/static/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
