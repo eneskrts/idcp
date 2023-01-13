@@ -37,6 +37,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     # 3rd party
     'rest_framework',
+    'drf_yasg',
     # our apps
     'authentication',
     'appointment',
@@ -106,6 +107,8 @@ LANGUAGES = (
 )
 
 LOCALE_PATHS = [BASE_DIR / 'locale']
+
+APPEND_SLASH = True
 
 STATIC_URL = '/static/'
 
