@@ -1,6 +1,6 @@
 from rest_framework import serializers
-from .models import Availability, MeetingRoom, AppointmentRequest
-from .views import DateToHours, CheckAvailability, UpdateAppointmentRequest
+from appointment.models import Availability, MeetingRoom, AppointmentRequest
+from appointment.views import DateToHours, CheckAvailability, UpdateAppointmentRequest
 from psycopg2.extras import DateTimeTZRange
 import datetime
 from django.contrib.auth.models import User

@@ -4,9 +4,9 @@ from . import views
 from rest_framework.routers import DefaultRouter
 
 router=DefaultRouter()
-router.register(r'availability',views.AvailabilityViewSet)
-router.register(r'meeting-room',views.MeetingRoomViewSet)
-router.register(r'appointment-request',views.AppointmentRequestViewSet)
+# router.register(r'availability',views.AvailabilityViewSet)
+# router.register(r'meeting-room',views.MeetingRoomViewSet)
+# router.register(r'appointment-request',views.AppointmentRequestViewSet)
 
 urlpatterns = [
     path('',include(router.urls)),

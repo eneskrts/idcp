@@ -32,7 +32,7 @@ class MeetingRoom(BaseModel):
     meeting_name = models.CharField(max_length=200, null=False)
     meeting_description = models.CharField(max_length=1000)
 
-    attendees = models.ManyToManyField(get_user_model(), related_name="attendees", through="AppointmentRequest")
+    attendees = models.ManyToManyField(to='auth.user', related_name="attendees", through="AppointmentRequest")
 
     meeting_url = models.CharField(max_length=1000)
     meeting_start_time = models.DateTimeField(null=False)

@@ -1,5 +1,5 @@
 import datetime
-from .models import Availability, AppointmentRequest, MeetingRoom
+from appointment.models import Availability, AppointmentRequest, MeetingRoom
 from psycopg2.extras import DateTimeTZRange
 from zoneinfo import ZoneInfo
 
@@ -7,7 +7,7 @@ from django_filters import FilterSet, DateTimeFromToRangeFilter, rest_framework 
 from django_filters.widgets import RangeWidget
 
 from rest_framework import viewsets
-from .serializers import AvailabilitySerializer, MeetingRoomSerializer, AppointmentRequestSerializer
+from appointment.serializers import AvailabilitySerializer, MeetingRoomSerializer, AppointmentRequestSerializer
 from rest_framework.viewsets import mixins
 from rest_framework.response import Response
 
