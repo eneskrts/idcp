@@ -28,6 +28,7 @@ class Availability(BaseModel):
 
 
 class MeetingRoom(BaseModel):
+    patient = models.ForeignKey(to="patient.Patients", on_delete=models.DO_NOTHING, null=True,related_name="patient")
     meeting_host = models.ForeignKey(get_user_model(), on_delete=models.DO_NOTHING, related_name="meeting_host")
     meeting_name = models.CharField(max_length=200, null=False)
     meeting_description = models.CharField(max_length=1000)
