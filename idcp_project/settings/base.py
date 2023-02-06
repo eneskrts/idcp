@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     # 3rd party
     'rest_framework',
     'drf_yasg',
+    'django_filters',
     # our apps
     'authentication',
     'appointment',
@@ -113,3 +114,4 @@ APPEND_SLASH = True
 STATIC_URL = '/static/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
