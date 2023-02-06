@@ -6,11 +6,11 @@ from drf_yasg import openapi
 
 schema_view = get_schema_view(
     openapi.Info(
-        title="MEBRE API",
+        title="IDCP API",
         default_version='v1',
-        description="MEBRE API DESCRIPTION",
+        description="IDCP API DESCRIPTION",
         terms_of_service="https://www.ourapp.com/policies/terms/",
-        contact=openapi.Contact(email="contact@mebre"),
+        contact=openapi.Contact(email="contact@idcp"),
         license=openapi.License(name="Test License"),
     ),
     public=True,
