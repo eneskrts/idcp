@@ -3,7 +3,7 @@ from .models import Availability, MeetingRoom, AppointmentRequest
 from .views import DateToHours, CreateAvailability, CheckAvailability, UpdateAppointmentRequest
 from psycopg2.extras import DateTimeTZRange
 import datetime
-from django.contrib.auth.models import User
+from authentication.models import User
 from django.utils import timezone
 from zoneinfo import ZoneInfo 
 

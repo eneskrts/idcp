@@ -14,7 +14,7 @@ router.register(r'profile', views.ProfileViewSet)
 router.register(r'users/update', views.UpdateUser)
 
 urlpatterns = [
-    path('api-auth/', include('rest_framework.urls', namespace='rest_framework')),
+    path('api-auth/', include('rest_framework.urls')),
     path('', include(router.urls)),
     path('login', jwt_views.TokenObtainPairView.as_view(), name='token_obtain_pair'),
     path('login/refresh/', jwt_views.TokenRefreshView.as_view(), name='token_refresh'),
