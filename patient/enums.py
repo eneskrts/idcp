@@ -8,11 +8,11 @@ class GenderOptions(models.TextChoices):
     
 
 class PacksPerDay(models.TextChoices):
-    ZERO = "0"
+    ZERO = "0", "0"
     QUARTER = "quarter", "Quarter"
     HALF = "half", "Half"
-    ONE = "1"
-    TWO = "2"
+    ONE = "1", "1"
+    TWO = "2", "2"
     MORE = "more", "More"
 
 

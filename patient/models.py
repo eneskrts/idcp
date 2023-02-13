@@ -14,6 +14,7 @@ class Patients(BaseModel):
     illnesses = models.CharField(max_length=100)
     describtion = models.CharField(max_length=1000, null=True)
     past_illnesses = models.ManyToManyField(to="patient.PastMedicalIllnesses")
+    symptoms = models.ManyToManyField(to="patient.Symptoms")
 
     def __str__(self):
         return self.full_name
@@ -48,11 +49,18 @@ class Medications(BaseModel):
         return self.medication_name
     
 
-class PastMedicalIllnesses(BaseModel):
+class PastMedicalIllnesses(models.Model):
     illness = models.CharField(max_length=100)
 
     def __str__(self):
         return self.illness
+    
+    
+class Symptoms(models.Model):
+    symptoms = models.CharField(max_length=100)
+    
+    def __str__(self):
+        return self.symptoms
 
 
 class PastMedicalOperations(BaseModel):
@@ -96,4 +104,29 @@ class FamilyHealthHistory(BaseModel):
     
     def __str__(self):
         return self.members
+    
+
+#These models are for selections made with the get method.
+class FamilyMembersNames(models.Model):
+    value = models.CharField(max_length=200)
+    label = models.CharField(max_length=200)
+    
+    def __str__(self):
+        return self.value
+
+
+class FrequencyOfUse(models.Model):
+    value = models.CharField(max_length=200)
+    label = models.CharField(max_length=200)
+    
+    def __str__(self):
+        return self.value
+
+
+class GenderOptionsNames(models.Model):
+    value = models.CharField(max_length=200)
+    label = models.CharField(max_length=200)
+    
+    def __str__(self):
+        return self.value
     

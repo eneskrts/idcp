@@ -1,7 +1,6 @@
 from rest_framework import serializers
 from .models import *
-from django.core import serializers as s
-import json
+from .enums import *
         
         
 class PatientsSerializer(serializers.ModelSerializer):
@@ -13,9 +12,11 @@ class PatientsSerializer(serializers.ModelSerializer):
     social_history = serializers.SerializerMethodField('_get_social_history')
     family_health_history = serializers.SerializerMethodField('_get_family_health_history')
     
+    
     class Meta:
         model = Patients
         fields = "__all__"
+        
         
     def _get_patient_files(self, obj):
         user = obj.id
@@ -49,8 +50,16 @@ class PatientsSerializer(serializers.ModelSerializer):
         user = obj.id
         data = FamilyHealthHistory.objects.filter(patient=user).values()
         return data
+    
+    class Meta:
+        model = Patients
+        fields = "__all__"
         
-        
+    # def create(self, validated_data):
+    #     instance = super().create(validated_data)
+    #     for i in FamilyMembers:
+    #         FamilyHealthHistory.objects.create(patient=instance,members=i)
+    #     return instance
         
 
 class PatientsFileSerializer(serializers.ModelSerializer):
@@ -81,6 +90,13 @@ class PastMedicalIllnessesSerializer(serializers.ModelSerializer):
         fields = "__all__"
         
         
+class SymptomsSerializer(serializers.ModelSerializer):
+    
+    class Meta:
+        model = Symptoms
+        fields = "__all__"
+        
+        
 class PastMedicalOperationsSerializer(serializers.ModelSerializer):
     
     class Meta:
@@ -99,5 +115,27 @@ class FamilyHealthHistorySerializer(serializers.ModelSerializer):
     
     class Meta:
         model = FamilyHealthHistory
+        fields = "__all__"
+        
+
+#These serializers are for selections made with the get method.
+class FamilyMembersNamesSerializer(serializers.ModelSerializer):
+    
+    class Meta:
+        model = FamilyMembersNames
+        fields = "__all__"
+
+
+class FrequencyOfUseSerializer(serializers.ModelSerializer):
+    
+    class Meta:
+        model = FrequencyOfUse
+        fields = "__all__"
+
+
+class GenderOptionsNamesSerializer(serializers.ModelSerializer):
+    
+    class Meta:
+        model = GenderOptionsNames
         fields = "__all__"
         
