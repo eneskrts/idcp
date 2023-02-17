@@ -3,7 +3,7 @@ import datetime
 
 class StatusOption(models.TextChoices):
     ACTIVE = "active", "Active"
-    INACTİVE = "inactive", "Inactive"
+    INACTIVE = "inactive", "Inactive"
         
         
 class DoctorsRequest(models.TextChoices):
