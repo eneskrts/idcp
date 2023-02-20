@@ -1,7 +1,7 @@
 from django.shortcuts import render
 import datetime
 from .models import Availability, AppointmentRequest, MeetingRoom
-from django.contrib.auth.models import User
+from authentication.models import User
 from psycopg2.extras import DateTimeTZRange, DateTimeRange
 from django.utils import timezone
 from zoneinfo import ZoneInfo 
