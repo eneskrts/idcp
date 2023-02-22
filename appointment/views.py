@@ -6,7 +6,9 @@ from psycopg2.extras import DateTimeTZRange, DateTimeRange
 from django.utils import timezone
 from zoneinfo import ZoneInfo 
 
+
 # Create your views here.
+
 
 def DateToHours(time):
     hours = []
@@ -24,8 +26,8 @@ def DateToHours(time):
     return hours
 
 
-
 # users type = User objects, meeting type = MeetingRoom objects
+
 def SendMeetingRequests(users, meeting):
     
     for user in users:
@@ -84,8 +86,7 @@ def UpdateAppointmentRequest(appointment_request,answer):
         
     availability.save()
     
-    
-    
+
 # Filterset
 from django_filters import FilterSet, DateTimeFromToRangeFilter, rest_framework as filters
 from django_filters.widgets import RangeWidget
@@ -129,13 +130,10 @@ class AppointmentRequestFilter(FilterSet):
 
 
 
-    
-            
 #API
 from rest_framework import viewsets
 from .serializers import AvailabilitySerializer,  MeetingRoomSerializer, AppointmentRequestSerializer
 from rest_framework.viewsets import mixins
-from rest_framework.permissions import IsAdminUser
 from rest_framework.response import Response
 
 class AvailabilityViewSet(mixins.CreateModelMixin,
@@ -164,8 +162,7 @@ class AvailabilityViewSet(mixins.CreateModelMixin,
 
         serializer = self.get_serializer(queryset, many=True)
         return Response(serializer.data)
-    
-    
+
     def retrieve(self, request, *args, **kwargs):
         instance = self.get_object()
         
@@ -177,8 +174,8 @@ class AvailabilityViewSet(mixins.CreateModelMixin,
         serializer = self.get_serializer(instance)
         return Response(serializer.data)
 
-    
-    
+
+
 class MeetingRoomViewSet(viewsets.ModelViewSet):
     
     queryset=MeetingRoom.objects.all()

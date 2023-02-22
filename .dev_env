@@ -1,9 +1,0 @@
-DJANGO_SETTINGS_MODULE=idcp_project.settings.production
-DJANGO_SECRET_KEY=xxx
-PGADMIN_DEFAULT_EMAIL=admin@idcp.com
-PGADMIN_DEFAULT_PASSWORD=xxxx
-POSTGRES_DB=postgres
-POSTGRES_USER=postgres
-POSTGRES_PASSWORD=postgres
-POSTGRES_NAME=postgres
-POSTGRES_CONTAINER_NAME=idcp_postgresql
