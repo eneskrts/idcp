@@ -6,6 +6,7 @@ import datetime
 from authentication.models import User
 from django.utils import timezone
 from zoneinfo import ZoneInfo
+from django.utils.translation import gettext_lazy as _
 
 
 class AvailabilitySerializer(serializers.ModelSerializer):
@@ -34,16 +35,16 @@ class AvailabilitySerializer(serializers.ModelSerializer):
 
         if (time.upper.year != time.lower.year) or (time.upper.month != time.lower.month) or (
                 time.upper.day != time.lower.day):
-            error = {'message': "Saat aralığı farklı tarihlerde ve farklı günlerde olamaz", 'time': time}
+            error = {'message': _("Saat aralığı farklı tarihlerde ve farklı günlerde olamaz"), 'time': time}
             raise serializers.ValidationError(error)
 
         elif time.upper < now:
-            error = {'messages': 'Geçmişte müsait olamazsınız', 'time': time}
+            error = {'messages': _('Geçmişte müsait olamazsınız'), 'time': time}
             raise serializers.ValidationError(error)
 
 
         elif (time.upper.minute != 0) or (time.lower.minute != 0):
-            error = {'messages': 'sadece Tam saatler girmelisiniz, dakika 00 olmalıdır ', 'time': time}
+            error = {'messages': _('sadece Tam saatler girmelisiniz, dakika 00 olmalıdır'), 'time': time}
             raise serializers.ValidationError(error)
 
     def create(self, validated_data):
@@ -101,7 +102,7 @@ class MeetingRoomSerializer(serializers.ModelSerializer):
             validated_data["meeting_start_time"] = time
         except:
             error = {
-                'messages': 'Tarih "1999-09-09 12:00:00" formatında olmalıdır',
+                'messages': _('Tarih "1999-09-09 12:00:00" formatında olmalıdır'),
                 'start_time': validated_data["meeting_start_time"]
             }
             raise serializers.ValidationError(error)
@@ -109,11 +110,11 @@ class MeetingRoomSerializer(serializers.ModelSerializer):
         now = timezone.now()
 
         if time < now:
-            error = {'messages': 'Geçmişte Meeting düzenleyemezsiniz', 'time': time}
+            error = {'messages': _('Geçmişte Meeting düzenleyemezsiniz'), 'time': time}
             raise serializers.ValidationError(error)
 
         elif time.minute != 0:
-            error = {'messages': 'sadece Tam saatler girmelisiniz, dakika 00 olmalıdır ', 'time': time}
+            error = {'messages': _('sadece Tam saatler girmelisiniz, dakika 00 olmalıdır'), 'time': time}
             raise serializers.ValidationError(error)
 
         time_range = DateTimeTZRange(time, time + datetime.timedelta(hours=1))
@@ -132,7 +133,7 @@ class MeetingRoomSerializer(serializers.ModelSerializer):
                 if u not in check:
                     notIn.append(u.username)
             data = {
-                'messages': "Tüm doktorlar müsait değil",
+                'messages': _("Tüm doktorlar müsait değil"),
                 'müsait_olmayan_doktorlar': notIn,
                 'data': {
                     "attendees": validated_data["attendees"],
