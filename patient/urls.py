@@ -18,5 +18,6 @@ router.register(r'frequency_of_use',views.FrequencyOfUseViewSet)
 router.register(r'gender_options_names',views.GenderOptionsNamesViewSet)
 
 urlpatterns = [
-    path('',include(router.urls))
+    path('',include(router.urls)),
+    path('download/',views.DownloadFile.as_view(),name="file_download")
     ]
