@@ -1,4 +1,5 @@
 from rest_framework import serializers
+from django.utils.translation import gettext_lazy as _
 from .models import City ,Country, Experience, Education, User, Profession, Profile, Employee
 
 
@@ -85,7 +86,7 @@ class UserSerializer(serializers.ModelSerializer):
     def check_id_card(self,obj):
         is_accepted = obj.is_accepted
         if ( is_accepted is False) :
-            error = {'message': "Teşekkür ederiz! Başvurunuz tarafımızca incelenecek."}
+            error = {'message': _("Teşekkür ederiz! Başvurunuz tarafımızca incelenecek.")}
             raise serializers.ValidationError(error)
 
     def get_experience_info(self,obj):

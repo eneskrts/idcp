@@ -5,6 +5,8 @@ from django.contrib.auth.models import AbstractUser
 from django.contrib.postgres.fields import ArrayField
 import pytz
 from mptt.models import MPTTModel, TreeForeignKey
+from django.utils.translation import gettext_lazy as _
+
 
 TIMEZONES = tuple(zip(pytz.all_timezones, pytz.all_timezones))
 
@@ -50,7 +52,7 @@ class User(AbstractUser):
         unique=True,
         validators=[EmailValidator],
         error_messages={
-            "unique": "Bu email sistemimizde kayıtlıdır.",
+            "unique": _("Bu email sistemimizde kayıtlıdır."),
         },
     )
 
@@ -110,10 +112,10 @@ class Education(models.Model):
 
 class Profile(models.Model):
     TITLE_CHOICES = (
-        ('PROFESSOR DOCTOR', 'Professor Doctor'),
-        ('ASSOCIATE PROFESSOR', 'Associate Professor'),
-        ('SPECIALIST', 'Specialist'),
-        ('LECTURER', 'Lecturer'),
+        ('PROFESSOR DOCTOR', _('Professor Doctor')),
+        ('ASSOCIATE PROFESSOR', _('Associate Professor')),
+        ('SPECIALIST', _('Specialist')),
+        ('LECTURER', _('Lecturer')),
     )
 
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='profile')
