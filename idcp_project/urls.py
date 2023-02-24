@@ -15,9 +15,20 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
+from django.conf.urls.i18n import i18n_patterns
+
+from . import swagger
+
+schema_view = swagger.schema_view
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/v1/auth/', include('authentication.urls')),
-    path('api/v1/appointment/', include('appointment.urls'))
+    path('api/v1/appointment/', include('appointment.urls')),
+    path('api/v1/patient/', include('patient.urls'))
+]
+
+urlpatterns += swagger.urlpatterns
+urlpatterns = [
+    *i18n_patterns(*urlpatterns)
 ]

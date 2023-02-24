@@ -16,7 +16,6 @@ router.register(r'users/update', views.UpdateUser)
 router.register(r'employees', views.EmployeeViewSet)
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
     path('api-auth/', include('rest_framework.urls')),
     path('', include(router.urls)),
     path('login', jwt_views.TokenObtainPairView.as_view(), name='token_obtain_pair'),
