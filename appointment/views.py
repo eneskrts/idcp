@@ -107,8 +107,9 @@ class AvailableFilter(FilterSet):
                 queryset = queryset.filter(available_user=user)
             
             if self.data['available_time_max'] and self.data['available_time_min']:
-                available_time_max = datetime.datetime.strptime(self.data['available_time_max'],'%Y-%m-%dT%H:%M').astimezone(tz=ZoneInfo("Turkey"))
-                available_time_min = datetime.datetime.strptime(self.data['available_time_min'],'%Y-%m-%dT%H:%M').astimezone(tz=ZoneInfo("Turkey"))
+                available_time_max = datetime.datetime.strptime(self.data['available_time_max'],'%Y-%m-%dT%H:%M').replace(tzinfo=ZoneInfo(self.request.user.timezone))
+                available_time_min = datetime.datetime.strptime(self.data['available_time_min'],'%Y-%m-%dT%H:%M').replace(tzinfo=ZoneInfo(self.request.user.timezone))
+                print(self.request.user.timezone)
                 time = DateTimeTZRange(available_time_min,available_time_max)
                 queryset = queryset.filter(available_time__contained_by=time)
             
@@ -150,8 +151,8 @@ class AvailabilityViewSet(mixins.CreateModelMixin,
     def list(self, request, *args, **kwargs):
         queryset = self.filter_queryset(self.get_queryset())
         for query in queryset:
-            show_upper = query.available_time.upper.astimezone(tz=ZoneInfo("Turkey"))
-            show_lower = query.available_time.lower.astimezone(tz=ZoneInfo("Turkey"))
+            show_upper = query.available_time.upper.astimezone(tz=ZoneInfo(request.user.timezone))
+            show_lower = query.available_time.lower.astimezone(tz=ZoneInfo(request.user.timezone))
             show_time = DateTimeTZRange(show_lower,show_upper)
             query.available_time = show_time
 
@@ -166,8 +167,8 @@ class AvailabilityViewSet(mixins.CreateModelMixin,
     def retrieve(self, request, *args, **kwargs):
         instance = self.get_object()
         
-        show_upper = instance.available_time.upper.astimezone(tz=ZoneInfo("Turkey"))
-        show_lower = instance.available_time.lower.astimezone(tz=ZoneInfo("Turkey"))
+        show_upper = instance.available_time.upper.astimezone(tz=ZoneInfo(request.user.timezone))
+        show_lower = instance.available_time.lower.astimezone(tz=ZoneInfo(request.user.timezone))
         show_time = DateTimeTZRange(show_lower,show_upper)
         instance.d = show_time
         
@@ -188,7 +189,7 @@ class MeetingRoomViewSet(viewsets.ModelViewSet):
         queryset = self.filter_queryset(self.get_queryset())
         
         for meeting_room in queryset:
-            show_time =meeting_room.meeting_start_time.astimezone(tz=ZoneInfo("Turkey"))
+            show_time =meeting_room.meeting_start_time.astimezone(tz=ZoneInfo(request.user.timezone))
             meeting_room.meeting_start_time = show_time
             
         serializer = self.get_serializer(queryset, many=True)
@@ -197,7 +198,7 @@ class MeetingRoomViewSet(viewsets.ModelViewSet):
     def retrieve(self, request, *args, **kwargs):
         instance = self.get_object()
         
-        show_time = instance.meeting_start_time.astimezone(tz=ZoneInfo("Turkey"))
+        show_time = instance.meeting_start_time.astimezone(tz=ZoneInfo(request.user.timezone))
         instance.meeting_start_time = show_time
         
         serializer = self.get_serializer(instance)
@@ -217,7 +218,7 @@ class AppointmentRequestViewSet(viewsets.ModelViewSet):
         queryset = self.filter_queryset(self.get_queryset())
         
         for meeting_room in queryset:
-            show_time =meeting_room.meeting.meeting_start_time.astimezone(tz=ZoneInfo("Turkey"))
+            show_time =meeting_room.meeting.meeting_start_time.astimezone(tz=ZoneInfo(request.user.timezone))
             meeting_room.meeting.meeting_start_time = show_time
             
         serializer = self.get_serializer(queryset, many=True)
@@ -226,7 +227,7 @@ class AppointmentRequestViewSet(viewsets.ModelViewSet):
     def retrieve(self, request, *args, **kwargs):
         instance = self.get_object()
         
-        show_time = instance.meeting.meeting_start_time.astimezone(tz=ZoneInfo("Turkey"))
+        show_time = instance.meeting.meeting_start_time.astimezone(tz=ZoneInfo(request.user.timezone))
         instance.meeting.meeting_start_time = show_time
         
         serializer = self.get_serializer(instance)

@@ -95,11 +95,13 @@ class MeetingRoomSerializer(serializers.ModelSerializer):
         fields = "__all__"
 
     def create(self, validated_data):
+        user = validated_data["meeting_host"]
         validated_data["meeting_start_time"] = validated_data["meeting_start_time"].replace(" ", "T")
         try:
             time = datetime.datetime.strptime(validated_data["meeting_start_time"], '%Y-%m-%dT%H:%M:%S') \
-                .astimezone(tz=ZoneInfo("Turkey"))
+                .replace(tzinfo=ZoneInfo(user.timezone))
             validated_data["meeting_start_time"] = time
+            print(time)
         except:
             error = {
                 'messages': _('Tarih "1999-09-09 12:00:00" formatında olmalıdır'),
