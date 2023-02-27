@@ -23,7 +23,7 @@ class Patients(BaseModel):
     
 def user_directory_path(instance, filename):
 # file will be uploaded to MEDIA_ROOT/user_<id>/<filename>
-    return 'media/patient/user_{0}/{1}'.format(instance.patient.id, filename)
+    return 'media/patient/{0}/{1}'.format(instance.patient.id, filename)
 
     
 class PatientsFile(BaseModel):

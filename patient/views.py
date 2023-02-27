@@ -3,6 +3,7 @@ from .models import *
 from .serializers import *
 from django.views import View
 from django.http import HttpResponse, HttpResponseNotFound
+from django.conf import settings
 #API
 from rest_framework import viewsets
 from rest_framework.viewsets import mixins
@@ -16,8 +17,8 @@ from django_filters import FilterSet, DateTimeFromToRangeFilter, rest_framework 
 # for download file
 class DownloadFile(View):
     
-    def get(self, request):
-        file_location = "C:/Users/Anıl/DESKTOK/vesnat/idcp/patient/deneme.pdf"
+    def get(self, request, pk, filepath):
+        file_location = str(settings.BASE_DIR)+"/media/patient/"+str(pk)+"/"+filepath
         try:    
             with open(file_location, 'rb') as f:
                 file_data = f.read()
