@@ -19,11 +19,18 @@ class Patients(BaseModel):
     def __str__(self):
         return self.full_name
     
+    
+    
+def user_directory_path(instance, filename):
+# file will be uploaded to MEDIA_ROOT/user_<id>/<filename>
+    return 'media/patient/user_{0}/{1}'.format(instance.patient.id, filename)
+
+    
 class PatientsFile(BaseModel):
     patient = models.ForeignKey(to="patient.Patients",on_delete=models.CASCADE, related_name="patient_files")
     name = models.CharField(max_length=200)
     description = models.CharField(max_length=1000, null=True)
-    file = models.FileField(upload_to=None, blank=True)
+    file = models.FileField(upload_to=user_directory_path, blank=True)
 
     def __str__(self):
         return self.name
