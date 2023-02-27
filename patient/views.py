@@ -1,6 +1,7 @@
 from django.shortcuts import render
 from .models import *
 from .serializers import *
+from appointment.models import AppointmentRequest
 from django.views import View
 from django.http import HttpResponse, HttpResponseNotFound
 from django.conf import settings
@@ -26,6 +27,13 @@ class DownloadFile(View):
             # sending response 
             response = HttpResponse(file_data, content_type='application/pdf')
             response['Content-Disposition'] = 'attachment; filename="deneme.pdf"'
+            
+            if request.user.is_authenticated:
+                patient = Patients.objects.get(pk=pk)
+                apointment_request = AppointmentRequest.objects.filter(doctor=request.user, meeting=patient.patient.first()).first()
+                
+                apointment_request.documents_checked = True
+                apointment_request.save()
 
         except IOError:
             # handle file not exist case here
