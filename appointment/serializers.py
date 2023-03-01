@@ -7,6 +7,12 @@ from authentication.models import User
 from django.utils import timezone
 from zoneinfo import ZoneInfo
 from django.utils.translation import gettext_lazy as _
+from idcp_project.settings import local
+from django.core.mail import send_mail
+from django.template.loader import get_template
+from django.template import Context
+from django.conf import settings
+from idcp_project.settings import local
 
 
 class AvailabilitySerializer(serializers.ModelSerializer):
@@ -118,16 +124,30 @@ class MeetingRoomSerializer(serializers.ModelSerializer):
         elif time.minute != 0:
             error = {'messages': _('sadece Tam saatler girmelisiniz, dakika 00 olmalıdır'), 'time': time}
             raise serializers.ValidationError(error)
-
+        
         time_range = DateTimeTZRange(time, time + datetime.timedelta(hours=1))
         check = CheckAvailability(time_range, validated_data["attendees"])
 
         # available time chek
         check = User.objects.filter(id__in=check[0].values_list("available_user"))
-
+        
         if len(check) == len(validated_data["attendees"]):
+            try:
 
-            return super().create(validated_data)
+                for attendees in validated_data["attendees"]:
+                    meet = super().create(validated_data)
+                    print(meet.id)
+                    user = User.objects.get(username=attendees)
+                    send(user)
+                    return meet
+                
+            except:
+                error = {
+                    'messages': "Hatalı işlem"
+            }
+                raise serializers.ValidationError(error)
+             
+
 
         else:
             notIn = []
@@ -148,7 +168,7 @@ class MeetingRoomSerializer(serializers.ModelSerializer):
                 }
             }
             raise serializers.ValidationError(data)
-
+  
 
 class AppointmentRequestSerializer(serializers.ModelSerializer):
     meeting_info = serializers.SerializerMethodField('_get_meeting_info')
@@ -189,3 +209,18 @@ class AppointmentRequestSerializer(serializers.ModelSerializer):
         UpdateAppointmentRequest(instance, answer)
 
         return instance
+
+
+def send(username):
+    subject = u'Invitation to Meet'
+    link = 'http://%s/tr/api/v1/appointment/appointment-request/' % (
+        local.SITE_HOST,
+    )
+    template = get_template('invitation_email.txt')
+
+    message = template.render({'link': link})
+
+    send_mail(
+    subject, message,
+    local.DEFAULT_FROM_EMAIL, [username.username]
+    )

@@ -3,6 +3,7 @@ from django.urls import include, path
 from django.contrib import admin
 from rest_framework import routers
 from authentication import views
+
 router = routers.DefaultRouter()
 router.register(r'cities', views.CityViewSet)
 router.register(r'countries', views.CountryViewSet)
@@ -12,6 +13,7 @@ router.register(r'educations', views.EducationViewSet)
 router.register(r'professions', views.ProfessionViewSet)
 router.register(r'profile', views.ProfileViewSet)
 router.register(r'users/update', views.UpdateUser)
+router.register(r'employees', views.EmployeeViewSet)
 
 urlpatterns = [
     path('api-auth/', include('rest_framework.urls')),
