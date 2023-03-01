@@ -48,6 +48,7 @@ class AppointmentRequest(BaseModel):
     meeting = models.ForeignKey("appointment.MeetingRoom", on_delete=models.CASCADE, related_name="meeting_room")
     doctor = models.ForeignKey(get_user_model(), on_delete=models.CASCADE, related_name="doctor")
 
+    documents_checked = models.BooleanField(default=False)
     doctor_request = models.CharField(choices=DoctorsRequest.choices, default=DoctorsRequest.WAITING,max_length=20)
     request_status = models.CharField(choices=StatusOption.choices, default=StatusOption.ACTIVE, max_length=20)
     explanation = models.CharField(max_length=500)
