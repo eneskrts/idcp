@@ -89,7 +89,7 @@ class UserSerializer(serializers.ModelSerializer):
         is_accepted = obj.is_accepted
         if ( is_accepted is False) :
             error = {'message': _("Teşekkür ederiz! Başvurunuz tarafımızca incelenecek.")}
-            raise serializers.ValidationError(error)        
+            #raise serializers.ValidationError(error)
 
     def get_experience_info(self,obj):
         data={}
