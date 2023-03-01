@@ -42,7 +42,6 @@ class City(models.Model):
 
 
 class User(AbstractUser):
-    phone = models.CharField(max_length=20, blank=True, null=True)
     timezone = models.CharField(max_length=32, choices=TIMEZONES,default='GMT')
     id_card = models.FileField(upload_to='doctors/id_card_upload', blank=True,
                                default='default_id_card.png')
@@ -58,7 +57,7 @@ class User(AbstractUser):
 
     def __str__(self):
         return self.username
-
+ 
    
 class Profession(MPTTModel):
     name = models.CharField(max_length=255, null=True, blank=True)
@@ -129,6 +128,8 @@ class Profile(models.Model):
     profession = models.ForeignKey(Profession, on_delete=models.CASCADE, related_name='profile')
     title = models.CharField(max_length=30, choices=TITLE_CHOICES)
     is_employee = models.BooleanField(default=False)
+    orcid_account = models.URLField(max_length=200, null=True)
+    pubmed_account = models.URLField(max_length=200, null=True)
 
 
 class Employee(models.Model):
@@ -150,3 +151,6 @@ class Employee(models.Model):
     patient_consultation = models.BooleanField(default=False)
     academic_consultation = models.BooleanField(default=False)
     cv = models.FileField(upload_to='doctors/cv_upload', blank=True, default='default_cv.png')
+    about_doctor = models.CharField(max_length=700)
+    hobbies = ArrayField(models.CharField(max_length=500),null=True)
+

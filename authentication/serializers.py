@@ -75,19 +75,21 @@ class UserSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = User
-        fields = ('username', 'phone', 'timezone', 'id_card', 'password', 'profile',
+        fields = ('id', 'username', 'timezone', 'id_card', 'password', 'profile',
                   'experience', 'education', 'employee', 'is_accepted')
         extra_kwargs = {'password': {'write_only': True}}
+
 
     def get_id_card(self, obj):
         request = self.context.get('request')
         return request.build_absolute_uri(obj.id_card.url)
 
+
     def check_id_card(self,obj):
         is_accepted = obj.is_accepted
         if ( is_accepted is False) :
             error = {'message': _("Teşekkür ederiz! Başvurunuz tarafımızca incelenecek.")}
-            raise serializers.ValidationError(error)
+            raise serializers.ValidationError(error)        
 
     def get_experience_info(self,obj):
         data={}
@@ -116,7 +118,7 @@ class UserSerializer(serializers.ModelSerializer):
             }
             data.update(education_data)
         return data
-
+        
     def create(self, validated_data):
         profile_data = validated_data.pop('profile')
         password = validated_data.pop('password')
@@ -132,7 +134,7 @@ class UpdateUserSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = User
-        fields = ('phone', 'timezone', 'username', 'id_card', 'profile')
+        fields = ('timezone', 'username', 'id_card', 'profile')
         extra_kwargs = {'password': {'read_only': True}}
 
     def save(self, **kwargs):
