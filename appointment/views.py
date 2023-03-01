@@ -1,7 +1,7 @@
 from django.shortcuts import render
 import datetime
 from .models import Availability, AppointmentRequest, MeetingRoom
-from authentication.models import User
+from authentication.models import User, Profession, Profile
 from psycopg2.extras import DateTimeTZRange, DateTimeRange
 from django.utils import timezone
 from zoneinfo import ZoneInfo 
@@ -94,15 +94,16 @@ from django_filters.widgets import RangeWidget
 
 class AvailableFilter(FilterSet):
     available_time = DateTimeFromToRangeFilter(widget=RangeWidget(attrs={'type':'datetime-local'}))
+    branch = filters.CharFilter(label="Branch", field_name=Profession)
 
     class Meta:
         model = Availability
-        fields = ["available_user","available_time"]
+        fields = ["available_user","available_time","branch"]
         
         
     def filter_queryset(self, queryset):
         if self.data:
-            if self.data["available_user"]:
+            if self.data["available_user"]: 
                 user = self.data["available_user"]
                 queryset = queryset.filter(available_user=user)
             
@@ -112,6 +113,10 @@ class AvailableFilter(FilterSet):
                 print(self.request.user.timezone)
                 time = DateTimeTZRange(available_time_min,available_time_max)
                 queryset = queryset.filter(available_time__contained_by=time)
+                
+            if self.data["branch"]:
+                doctors = Profile.objects.filter(profession__name=self.data["branch"])
+                queryset = queryset.filter(available_user__in=doctors.values_list("user"))
             
             return queryset
         
