@@ -1,0 +1,4 @@
+Our dear member
+To accept the invitation, please click the link below:
+{{ link }}
+

@@ -22,3 +22,15 @@ BROKER_URL = redis_url + "0"
 CELERY_BROKER_URL = BROKER_URL
 CELERY_RESULT_BACKEND = BROKER_URL
 
+SITE_HOST = '127.0.0.1:8000'
+DEFAULT_FROM_EMAIL = 'IDCP <hasretkalhan@gmail.com>'
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_FROM = 'hasretkalhan@gmail.com'
+EMAIL_HOST_USER = 'hasretkalhan@gmail.com'
+EMAIL_HOST_PASSWORD = 'ehckensyqhwiwxbd'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+PASSWORD_RESET_TIMEOUT = 14400
+
+LOGIN_REDIRECT_URL = 'login'
