@@ -52,7 +52,7 @@ class ExperienceSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Experience
-        fields = ('experience_place','description', 'start_year', 'end_year', 'city','city_info')
+        fields = ('__all__')
 
     def get_city_info(self,obj):
         data= obj.city.name
