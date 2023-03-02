@@ -54,7 +54,7 @@ class CountryViewSet(viewsets.ModelViewSet):
 
 class UserViewSet(viewsets.ModelViewSet):
 
-    queryset = User.objects.all()
+    queryset = User.objects.filter(is_accepted=True)
     serializer_class = UserSerializer
  
 class ExperienceViewSet(viewsets.ModelViewSet):
