@@ -12,7 +12,7 @@ class ProfileFilter(FilterSet):
     country = filters.CharFilter(label="Country")
     class Meta:
         model = Profile
-        fields = ["name","country"]
+        fields = ["name","country","is_employee"]
         
         
     def filter_queryset(self, queryset):
@@ -31,12 +31,13 @@ class ProfileFilter(FilterSet):
                 else:
                     queryset = queryset.filter(name=name)
             
+            if self.data["is_employee"]:
+                queryset = queryset.filter(is_employee=True)
+                
             return queryset
         
         return queryset
     
-
-
 
 
 
