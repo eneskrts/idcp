@@ -2,7 +2,7 @@ from .base import *
 
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
-DEBUG = False
+DEBUG = True
 
 redis_url = "redis://idcp_redis:6379/"
 BROKER_URL = redis_url + "0"

@@ -27,7 +27,8 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/v1/auth/', include('authentication.urls')),
     path('api/v1/appointment/', include('appointment.urls')),
-    path('api/v1/patient/', include('patient.urls'))
+    path('api/v1/patient/', include('patient.urls')),
+    path('api/v1/blog/', include('blog.urls')),
 ]
 
 urlpatterns += swagger.urlpatterns
