@@ -1,6 +1,6 @@
 from rest_framework import serializers
-from django.utils.translation import gettext_lazy as _
 from .models import City ,Country, Experience, Education, User, Profession, Profile, Employee
+from django.utils.translation import gettext as _
 
 
 class CitySerializer(serializers.ModelSerializer):
@@ -34,20 +34,32 @@ class ProfessionSerializer(serializers.ModelSerializer):
 
 
 class EducationSerializer(serializers.ModelSerializer):
+    city = serializers.SerializerMethodField('get_city_info')
 
     class Meta:
         model = Education
         fields = ('__all__')
-
+        
+    def get_city_info(self,obj):
+        data= obj.city.name
+        return data
+    
 
 class ExperienceSerializer(serializers.ModelSerializer): 
+    city = serializers.SerializerMethodField('get_city_info')
 
     class Meta:
         model = Experience
-        fields = ('__all__')
+        fields = ('experience_place','description', 'start_year', 'end_year', 'city')
 
+    def get_city_info(self,obj):
+        data= obj.city.name
+        return data
+    
 
 class ProfileSerializer(serializers.ModelSerializer):
+    country = serializers.SerializerMethodField('get_country_info')
+    city = serializers.SerializerMethodField('get_city_info')
 
     class Meta:
         model = Profile
@@ -57,6 +69,14 @@ class ProfileSerializer(serializers.ModelSerializer):
     def get_avatar(self, obj):
         request = self.context.get('request')
         return request.build_absolute_uri(obj.avatar.url)
+
+    def get_country_info(self,obj):
+        data = obj.city.country.name
+        return data
+    
+    def get_city_info(self,obj):
+        data= obj.city.name
+        return data
 
 
 class EmployeeSerializer(serializers.ModelSerializer):
@@ -75,15 +95,13 @@ class UserSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = User
-        fields = ('id', 'username', 'timezone', 'id_card', 'password', 'profile',
+        fields = ('username', 'timezone', 'id_card', 'password', 'profile',
                   'experience', 'education', 'employee', 'is_accepted')
         extra_kwargs = {'password': {'write_only': True}}
-
 
     def get_id_card(self, obj):
         request = self.context.get('request')
         return request.build_absolute_uri(obj.id_card.url)
-
 
     def check_id_card(self,obj):
         is_accepted = obj.is_accepted
@@ -118,7 +136,7 @@ class UserSerializer(serializers.ModelSerializer):
             }
             data.update(education_data)
         return data
-        
+
     def create(self, validated_data):
         profile_data = validated_data.pop('profile')
         password = validated_data.pop('password')
@@ -134,7 +152,7 @@ class UpdateUserSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = User
-        fields = ('timezone', 'username', 'id_card', 'profile')
+        fields = ('phone', 'timezone', 'username', 'id_card', 'profile')
         extra_kwargs = {'password': {'read_only': True}}
 
     def save(self, **kwargs):
