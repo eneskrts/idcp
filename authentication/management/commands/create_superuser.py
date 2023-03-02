@@ -6,8 +6,14 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
         User = get_user_model()
+        email = "idcp@idcp.com"
+        try:
+            User.objects.get(email=email)
+            return
+        except User.DoesNotExist:
+            pass
         if User.objects.count() == 0:
-            email = "idcp@idcp.com"
+
             admin = User.objects.create_superuser(username=email, email=email, password="12345@!")
             admin.is_active = True
             admin.is_admin = True
