@@ -34,7 +34,8 @@ class ProfessionSerializer(serializers.ModelSerializer):
 
 
 class EducationSerializer(serializers.ModelSerializer):
-    city = serializers.SerializerMethodField('get_city_info')
+    city_info = serializers.SerializerMethodField('get_city_info')
+    city = serializers.PrimaryKeyRelatedField(queryset = City.objects.all(), write_only=True)
 
     class Meta:
         model = Education
@@ -46,20 +47,25 @@ class EducationSerializer(serializers.ModelSerializer):
     
 
 class ExperienceSerializer(serializers.ModelSerializer): 
-    city = serializers.SerializerMethodField('get_city_info')
+    city_info = serializers.SerializerMethodField('get_city_info')
+    city = serializers.PrimaryKeyRelatedField(queryset = City.objects.all(), write_only=True)
 
     class Meta:
         model = Experience
-        fields = ('experience_place','description', 'start_year', 'end_year', 'city')
+        fields = ('experience_place','description', 'start_year', 'end_year', 'city','city_info')
 
     def get_city_info(self,obj):
         data= obj.city.name
         return data
+
     
 
 class ProfileSerializer(serializers.ModelSerializer):
-    country = serializers.SerializerMethodField('get_country_info')
-    city = serializers.SerializerMethodField('get_city_info')
+    country_info = serializers.SerializerMethodField('get_country_info')
+    country = serializers.PrimaryKeyRelatedField(queryset = Country.objects.all(), write_only=True)
+    city_info = serializers.SerializerMethodField('get_city_info')
+    city = serializers.PrimaryKeyRelatedField(queryset = City.objects.all(), write_only=True)
+
 
     class Meta:
         model = Profile
@@ -95,7 +101,7 @@ class UserSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = User
-        fields = ('username', 'timezone', 'id_card', 'password', 'profile',
+        fields = ('id','username', 'timezone', 'id_card', 'password', 'profile',
                   'experience', 'education', 'employee', 'is_accepted')
         extra_kwargs = {'password': {'write_only': True}}
 
@@ -152,7 +158,7 @@ class UpdateUserSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = User
-        fields = ('phone', 'timezone', 'username', 'id_card', 'profile')
+        fields = ('timezone', 'username', 'id_card', 'profile')
         extra_kwargs = {'password': {'read_only': True}}
 
     def save(self, **kwargs):
