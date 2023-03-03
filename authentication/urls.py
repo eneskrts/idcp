@@ -14,6 +14,9 @@ router.register(r'professions', views.ProfessionViewSet)
 router.register(r'profile', views.ProfileViewSet)
 router.register(r'users/update', views.UpdateUser)
 router.register(r'employees', views.EmployeeViewSet)
+router.register(r'title_names',views.TitleNamesViewSet)
+router.register(r'currency_unit',views.CurrencyUnitViewSet)
+
 
 urlpatterns = [
     path('api-auth/', include('rest_framework.urls')),

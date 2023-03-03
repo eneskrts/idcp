@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import City ,Country, Experience, Education, User, Profession, Profile, Employee
+from .models import City ,Country, Experience, Education, User, Profession, Profile, Employee, TitleNames, CurrencyUnitNames
 from django.utils.translation import gettext as _
 
 
@@ -65,7 +65,8 @@ class ProfileSerializer(serializers.ModelSerializer):
     country = serializers.PrimaryKeyRelatedField(queryset = Country.objects.all(), write_only=True)
     city_info = serializers.SerializerMethodField('get_city_info')
     city = serializers.PrimaryKeyRelatedField(queryset = City.objects.all(), write_only=True)
-
+    profession_info = serializers.SerializerMethodField('get_profession_info')
+    profession = serializers.PrimaryKeyRelatedField(queryset= Profession.objects.all(), write_only=True)
 
     class Meta:
         model = Profile
@@ -82,6 +83,10 @@ class ProfileSerializer(serializers.ModelSerializer):
     
     def get_city_info(self,obj):
         data= obj.city.name
+        return data
+
+    def get_profession_info(self,obj):
+        data= obj.profession.name
         return data
 
 
@@ -166,3 +171,17 @@ class UpdateUserSerializer(serializers.ModelSerializer):
         instance = super().save(**kwargs)
         Profile.objects.update_or_create(user=instance, defaults=profile)
         return instance
+    
+
+class TitleSerializer(serializers.ModelSerializer):
+    
+    class Meta:
+        model = TitleNames
+        fields = "__all__"
+
+
+class CurrencyUnitSerializer(serializers.ModelSerializer):
+    
+    class Meta:
+        model = CurrencyUnitNames
+        fields = "__all__"

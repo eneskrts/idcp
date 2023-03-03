@@ -6,6 +6,7 @@ from django.contrib.postgres.fields import ArrayField
 import pytz
 from mptt.models import MPTTModel, TreeForeignKey
 from django.utils.translation import gettext_lazy as _
+from authentication.enums import Title, CurrencyUnit
 
 
 TIMEZONES = tuple(zip(pytz.all_timezones, pytz.all_timezones))
@@ -110,13 +111,6 @@ class Education(models.Model):
 
 
 class Profile(models.Model):
-    TITLE_CHOICES = (
-        ('PROFESSOR DOCTOR', _('Professor Doctor')),
-        ('ASSOCIATE PROFESSOR', _('Associate Professor')),
-        ('SPECIALIST', _('Specialist')),
-        ('LECTURER', _('Lecturer')),
-    )
-
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='profile')
     avatar = models.ImageField(upload_to='doctors/avatar_upload',
     blank=True, default='default_1.png',
@@ -126,19 +120,14 @@ class Profile(models.Model):
     country= models.ForeignKey(Country, related_name='profile', on_delete=models.DO_NOTHING )
     city= models.ForeignKey(City, related_name='profile', on_delete=models.DO_NOTHING )
     profession = models.ForeignKey(Profession, on_delete=models.CASCADE, related_name='profile')
-    title = models.CharField(max_length=30, choices=TITLE_CHOICES)
+    title = models.CharField(choices=Title.choices, max_length=30)
     is_employee = models.BooleanField(default=False)
     orcid_account = models.URLField(max_length=200, null=True)
     pubmed_account = models.URLField(max_length=200, null=True)
+    phone = models.CharField(max_length=20, blank=True, null=True)
 
 
 class Employee(models.Model):
-    CURRENCY_UNIT_CHOICES = (
-        ('DOLLAR', '$'),
-        ('EURO', '€'),
-        ('TL', '₺'),
-    )
-
     profile = models.OneToOneField(Profile, on_delete=models.CASCADE, related_name='employee')
     birth_date = models.DateField(max_length=8,blank=True)
     treatment_methods = ArrayField(models.CharField(max_length=100),null=True)
@@ -147,10 +136,25 @@ class Employee(models.Model):
     professional_awards_degree = ArrayField(models.CharField(max_length=500),null=True)
     vocational_courses_conferences = ArrayField(models.CharField(max_length=500),null=True)
     client_cost = models.IntegerField()
-    currency_unit = models.CharField(max_length=6, choices=CURRENCY_UNIT_CHOICES)
+    currency_unit = models.CharField(choices=CurrencyUnit.choices, max_length=6)
     patient_consultation = models.BooleanField(default=False)
     academic_consultation = models.BooleanField(default=False)
     cv = models.FileField(upload_to='doctors/cv_upload', blank=True, default='default_cv.png')
     about_doctor = models.CharField(max_length=700)
     hobbies = ArrayField(models.CharField(max_length=500),null=True)
 
+
+class CurrencyUnitNames(models.Model):
+    value = models.CharField(max_length=200)
+    label = models.CharField(max_length=200)
+    
+    def __str__(self):
+        return self.value
+
+
+class TitleNames(models.Model):
+    value = models.CharField(max_length=200)
+    label = models.CharField(max_length=200)
+    
+    def __str__(self):
+        return self.value
