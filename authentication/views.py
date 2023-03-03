@@ -1,7 +1,8 @@
 from rest_framework import viewsets
 from rest_framework.parsers import MultiPartParser
-from authentication.models import City, Country, User, Experience, Education, Profile, Profession, Employee
-from authentication.serializers import EmployeeSerializer, UpdateUserSerializer, CitySerializer, CountrySerializer, UserSerializer, ExperienceSerializer, EducationSerializer, ProfileSerializer, ProfessionSerializer
+from authentication.models import City, Country, User, Experience, Education, Profile, Profession, Employee, TitleNames, CurrencyUnitNames
+from authentication.serializers import EmployeeSerializer, UpdateUserSerializer, CitySerializer, CountrySerializer, UserSerializer, ExperienceSerializer, EducationSerializer, ProfileSerializer, ProfessionSerializer, TitleSerializer, CurrencyUnitSerializer
+from rest_framework.viewsets import mixins
 
 # Filterset
 from django_filters import FilterSet, DateTimeFromToRangeFilter, rest_framework as filters
@@ -95,3 +96,15 @@ class UpdateUser(viewsets.ModelViewSet):
 
     queryset = User.objects.all()
     serializer_class = UpdateUserSerializer
+
+
+class TitleNamesViewSet(mixins.ListModelMixin, viewsets.GenericViewSet):
+    
+    queryset = TitleNames.objects.all()
+    serializer_class = TitleSerializer
+
+
+class CurrencyUnitViewSet(mixins.ListModelMixin, viewsets.GenericViewSet):
+    
+    queryset = CurrencyUnitNames.objects.all()
+    serializer_class = CurrencyUnitSerializer
