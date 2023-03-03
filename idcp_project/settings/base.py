@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'drf_yasg',
     'django_filters',
     'corsheaders',
+    'django_extensions',
     # our apps
     'authentication',
     'appointment',
