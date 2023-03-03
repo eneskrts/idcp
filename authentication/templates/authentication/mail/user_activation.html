@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Sending emails to user in Python</title>
+  </head>
+  <body>
+
+Hello, {{ user.first_name }} {{ user.last_name }}.
+
+{{ body }}
+
+{% if url_name == "mail_activate" or url_name == "reset_password_api" %}
+
+{{ domain }}?uidb64={{ uid }}&token={{ token }}
+{% else %}
+    {{ domain }}{% url url_name uidb64=uid token=token %}
+{% endif %}
+
+
+  </body>
+</html>
+
+{% comment %}
+{% autoescape off %}
+Hello, {{ user.first_name }} {{ user.last_name }}.
+
+{{ body }}
+{% if url_name == "mail_activate" %}
+
+    {{ domain }}{% url url_name %}?uidb64={{ uid }}&token={{ token }}
+{% else %}
+    {{ domain }}{% url url_name uidb64=uid token=token %}
+{% endif %}
+
+{% endautoescape %}
+
+{% endcomment %}
