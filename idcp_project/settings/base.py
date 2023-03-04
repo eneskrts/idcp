@@ -24,7 +24,7 @@ SECRET_KEY = get_env('DJANGO_SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
-
+SITE_ID = 1
 ALLOWED_HOSTS = ['*']
 
 
@@ -41,7 +41,7 @@ INSTALLED_APPS = [
     'django_filters',
     'corsheaders',
     'django_extensions',
-    'django.contrib.sites',
+    #'django.contrib.sites',
     # our apps
     'authentication',
     'appointment',
@@ -134,3 +134,7 @@ EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 EMAIL_HOST_USER = 'postmaster@sandbox205e02bce19348059845d311ec5f1a0f.mailgun.org'
 EMAIL_HOST_PASSWORD = 'd67cc4595879e004d42971d6bb09277e-15b35dee-0a572ddd'
+
+
+#DOMAIN = get_env('DOMAIN', '188.132.130.99')
+
