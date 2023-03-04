@@ -142,6 +142,7 @@ from .serializers import AvailabilitySerializer,  MeetingRoomSerializer, Appoint
 from rest_framework.viewsets import mixins
 from rest_framework.response import Response
 
+
 class AvailabilityViewSet(mixins.CreateModelMixin,
                          mixins.RetrieveModelMixin,
                          mixins.DestroyModelMixin,
@@ -181,7 +182,6 @@ class AvailabilityViewSet(mixins.CreateModelMixin,
         return Response(serializer.data)
 
 
-
 class MeetingRoomViewSet(viewsets.ModelViewSet):
     
     queryset=MeetingRoom.objects.all()
@@ -209,8 +209,7 @@ class MeetingRoomViewSet(viewsets.ModelViewSet):
         serializer = self.get_serializer(instance)
         return Response(serializer.data)
 
-    
-        
+
 class AppointmentRequestViewSet(viewsets.ModelViewSet):
     
     queryset=AppointmentRequest.objects.all()
