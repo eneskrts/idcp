@@ -5,7 +5,11 @@ import os
 from celery import Celery
 # from .celery_schedule_conf import CELERYBEAT_SCHEDULE
 
-os.environ.setdefault("DJANGO_SETTINGS_MODULE", "idcp_project.settings.local")
+from django.conf import settings
+if settings.DEBUG:
+    os.environ.setdefault("DJANGO_SETTINGS_MODULE", "idcp_project.settings.local")
+else:
+    os.environ.setdefault("DJANGO_SETTINGS_MODULE", "idcp_project.settings.production")
 
 app = Celery("idcp_project")
 

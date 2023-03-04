@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Mail Activation</title>
+</head>
+<body>
+{% if user %}
+    Hello, {{ user.username }}!
+    <br>
+    {{ message }}
+{% else %}
+     Hello, Guest!
+    {{ message }}
+{% endif %}
+
+</body>
+</html>

@@ -185,3 +185,41 @@ class CurrencyUnitSerializer(serializers.ModelSerializer):
     class Meta:
         model = CurrencyUnitNames
         fields = "__all__"
+
+
+class ResendActivationSerializer(serializers.Serializer): # NOQA
+    email = serializers.EmailField()
+
+    def validate_email(self, value): # NOQA
+        if User.objects.filter(email=value, activation=False).exists():
+            return value
+        raise serializers.ValidationError('Email does not exist')
+
+
+class ResetPasswordRequestSerializer(serializers.Serializer): # NOQA
+    email = serializers.EmailField()
+
+    def validate_email(self, value):  # NOQA
+        if User.objects.filter(email=value).exists():
+            return value
+        raise serializers.ValidationError('Email does not exist')
+
+
+class ChangePasswordSerializer(serializers.Serializer): # NOQA
+    old_password = serializers.CharField(required=True)
+    new_password = serializers.CharField(required=True)
+
+    def validate_old_password(self, value): # NOQA
+        if not self.context['request'].user.check_password(value):
+            raise serializers.ValidationError('Old password is not correct')
+        return value
+
+
+class TokenValitationSerializer(serializers.Serializer): # NOQA
+    uidb64 = serializers.CharField(max_length=100)
+    token = serializers.CharField(max_length=100)
+
+
+class ResetPasswordSerializer(TokenValitationSerializer): # NOQA
+    password = serializers.CharField(write_only=True, required=True,
+                                     max_length=150)
