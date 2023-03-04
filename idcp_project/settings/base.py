@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'django_filters',
     'corsheaders',
     'django_extensions',
+    'django.contrib.sites',
     # our apps
     'authentication',
     'appointment',
