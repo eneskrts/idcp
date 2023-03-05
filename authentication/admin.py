@@ -1,5 +1,5 @@
 from django.contrib import admin
-from authentication.models import Country, City, User, Profession, Education, Experience, Profile, TitleNames
+from authentication.models import Country, City, User, Profession, Education, Experience, Profile, TitleNames, CurrencyUnitNames
 
 admin.site.register(Country)
 admin.site.register(City)
@@ -9,3 +9,4 @@ admin.site.register(Education)
 admin.site.register(Experience)
 admin.site.register(Profile)
 admin.site.register(TitleNames)
+admin.site.register(CurrencyUnitNames)
