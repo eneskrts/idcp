@@ -5,6 +5,8 @@ from authentication.models import User, Profession, Profile
 from psycopg2.extras import DateTimeTZRange, DateTimeRange
 from django.utils import timezone
 from zoneinfo import ZoneInfo 
+from utils.mail import send_appointment_request_mail
+from idcp_project.settings import local
 
 
 # Create your views here.
@@ -188,8 +190,18 @@ class MeetingRoomViewSet(viewsets.ModelViewSet):
     serializer_class=MeetingRoomSerializer
     filter_backends = (filters.DjangoFilterBackend,)
     filterset_class = MeetingRoomFilter
-
     
+    
+    def perform_create(self, serializer):
+        instance = serializer.save()
+        
+        for attendeees in instance.attendees.all():
+            
+            send_appointment_request_mail(
+                attendeees.username, attendeees.id
+            )
+        
+
     def list(self, request, *args, **kwargs):
         queryset = self.filter_queryset(self.get_queryset())
         

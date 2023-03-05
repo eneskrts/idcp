@@ -8,6 +8,7 @@ from django.core.mail import EmailMessage
 #from django.contrib.sites.models import Site
 from django.template.loader import get_template
 from django.template import Context
+from idcp_project.settings import local
 
 
 class TokenGenerator(PasswordResetTokenGenerator):
@@ -49,3 +50,18 @@ def send_password_reset_mail(recipient, user, url_name, **kwargs):
         email.send()
     except Exception as e:
         print(e)
+
+
+def send_appointment_request_mail(username,id):
+    subject = 'Invitation to Meet'
+    link = 'http://188.132.130.99/api/v1/appointment/answer-request/'+str(id)+'/'
+    template = get_template('invitation_email.txt')
+
+    message = template.render({'link': link})
+
+    email = EmailMessage(subject, message, to=[username])
+    try:
+        email.send()
+    except Exception as e:
+        print(e)
+
