@@ -29,5 +29,5 @@ urlpatterns = [
     path('reset_password_confirm/', ResetPasswordApiView.as_view(), name='reset_password_confirm'),
     path('activation_control/<uidb64>/<token>/', CheckTokenApiView.as_view(), name='activation_control_api'),
     path('reset_password_request/', ResetPasswordRequest.as_view(), name='reset_password_api'),
-    path('mail_activate/', MailActivateApiView.as_view(), name='mail_activate_api'),
+    path('mail_activate/', MailActivateApiView.as_view(), name='mail_activate'),
 ]
